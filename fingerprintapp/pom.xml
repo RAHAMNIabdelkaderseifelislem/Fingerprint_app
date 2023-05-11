@@ -19,5 +19,11 @@
       <artifactId>sourceafis</artifactId>
       <version>3.17.1</version>
   </dependency>
+  <dependency>
+    <groupId>org.cloudsimplus</groupId>
+    <artifactId>cloudsimplus</artifactId>
+    <!-- Set a specific version or use the latest one -->
+    <version>LATEST</version>
+</dependency>
   </dependencies>
 </project>

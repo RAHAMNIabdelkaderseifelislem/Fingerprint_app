@@ -87,7 +87,7 @@ public class App {
         for (int i = 0; i < CLOUDLETS; i++) {
             // get fingerprint from cloudlet
             Cloudlet cloudlet = cloudletList.get(i);
-            byte[] storedFingerprintImage = cloudlet.getRequiredFiles().get(0).getContent();
+            byte[] storedFingerprintImage = cloudlet.getRequiredFiles().get(0).getBytes();
             FingerprintImage storedFingerprint = new FingerprintImage(storedFingerprintImage);
 
             // create template from fingerprint

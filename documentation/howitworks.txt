@@ -1,0 +1,7 @@
+the app is for checking fingerprint throw cloud 
+as we don't have any server for this app so we decided to use cloudsim plus API to simulate the cloud
+it started by creating a datacenter with 1 host and 1 VM
+then add our database to the host
+then demand from user to enter his fingerprint
+then the app will check if the fingerprint is in the database or not
+at the end it will print the simularity percentage with each fingerprint in the database

@@ -71,6 +71,9 @@ public class App {
 
         simulation.start();
 
+        // add fingerprints to cloudlet
+        addFingerprintsToCloudlet();
+
         // read fingerprint path from user
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter fingerprint path: ");
@@ -83,22 +86,28 @@ public class App {
         // create fingerprint image object
         FingerprintImage fingerprint = new FingerprintImage(fingerprintImage);
 
-        // compare to every stored fingerprint
-        for (int i = 0; i < CLOUDLETS; i++) {
-            // get fingerprint from cloudlet
-            Cloudlet cloudlet = cloudletList.get(i);
-            byte[] storedFingerprintImage = cloudlet.getRequiredFiles().get(0).getBytes();
-            FingerprintImage storedFingerprint = new FingerprintImage(storedFingerprintImage);
+        // create candidate template from fingerprint image
+        FingerprintTemplate candidate = new FingerprintTemplate(fingerprint);
 
-            // create template from fingerprint
-            FingerprintTemplate probe = new FingerprintTemplate(fingerprint);
-            FingerprintTemplate candidate = new FingerprintTemplate(storedFingerprint);
-                
-            // compare fingerprints
-            double score = new FingerprintMatcher(probe).match(candidate);
+        // get files from cloudlet
+        List<String> files = cloudletList.get(0).getRequiredFiles();
 
-            // print result
-            System.out.println("Fingerprint " + i + " score: " + score);
+        // compare fingerprint with each file
+        for (String file : files) {
+            // read fingerprint template from file
+            byte[] fingerprintTemplate = Files.readAllBytes(new File(file).toPath());
+
+            // create fingerprint template object
+            FingerprintTemplate template = new FingerprintTemplate(fingerprintTemplate);
+
+            // compare fingerprint with template
+            FingerprintMatcher matcher = new FingerprintMatcher(template);
+            double score = matcher.match(candidate);
+
+            // if score is greater than 40 then fingerprint is matched
+            if (score > 40) {
+                System.out.println("Fingerprint matched with " + file);
+            }
         }
 
 
@@ -167,4 +176,35 @@ public class App {
 
         return cloudletList;
     }
+
+    /**
+     * Add the dataset of fingerprints to the cloudlet
+     * @throws IOException
+     */
+    private void addFingerprintsToCloudlet() throws IOException {
+        for (int i = 0; i < CLOUDLETS; i++) {
+            // get cloudlet
+            Cloudlet cloudlet = cloudletList.get(i);
+
+            String path = "F:\\Games\\pes19mod\\fingerprints\\SOCOFing\\Real\\fingerprint" + i + ".png";
+
+            // add fingerprint to cloudlet
+            cloudlet.addRequiredFile(path);
+        }
+    }
+
+    /**
+     * get fingerprint from cloudlet
+     */
+    private List<String> getFingerprintFromCloudlet(int cloudletId) {
+        // get cloudlet
+        Cloudlet cloudlet = cloudletList.get(cloudletId);
+
+        // get all files from cloudlet
+        List<String> files = cloudlet.getRequiredFiles();
+
+        return files;
+
+    }
+
 }

@@ -4,6 +4,7 @@
 
 This is a simple app that allows you to check the simularity of fingerprints using SourceAFIS library.
 the app should be run on cloud but due to limired resources it uses cloudsim plus to simulate the cloud environment.
+it will return the files that has simularity greater than 40.
 
 ## Getting Started
 

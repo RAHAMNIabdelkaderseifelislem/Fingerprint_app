@@ -186,7 +186,7 @@ public class App {
             // get cloudlet
             Cloudlet cloudlet = cloudletList.get(i);
 
-            String path = "F:\\Games\\pes19mod\\fingerprints\\SOCOFing\\Real\\fingerprint" + i + ".png";
+            String path = "path to database";
 
             // add fingerprint to cloudlet
             cloudlet.addRequiredFile(path);

@@ -90,8 +90,9 @@ public class App {
         FingerprintTemplate candidate = new FingerprintTemplate(fingerprint);
 
         // get files from cloudlet
-        List<String> files = cloudletList.get(0).getRequiredFiles();
+        List<String> files = getFingerprintFromCloudlet(0);
 
+        System.out.println("Fingerprint matching started...");
         // compare fingerprint with each file
         for (String file : files) {
             // read fingerprint template from file
@@ -104,10 +105,7 @@ public class App {
             FingerprintMatcher matcher = new FingerprintMatcher(template);
             double score = matcher.match(candidate);
 
-            // if score is greater than 40 then fingerprint is matched
-            if (score > 40) {
-                System.out.println("Fingerprint matched with " + file);
-            }
+            System.out.println("Matching score: " + score + " for file: " + file);
         }
 
 
@@ -184,12 +182,21 @@ public class App {
     private void addFingerprintsToCloudlet() throws IOException {
         for (int i = 0; i < CLOUDLETS; i++) {
             // get cloudlet
-            Cloudlet cloudlet = cloudletList.get(i);
+            Cloudlet cloudlet = cloudletList.get(0);
 
-            String path = "path to database";
+            String path = "";
 
-            // add fingerprint to cloudlet
-            cloudlet.addRequiredFile(path);
+            // read all files from directory
+            File folder = new File(path);
+            File[] listOfFiles = folder.listFiles();
+
+            // add all files to cloudlet
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    // add fingerprint to cloudlet
+                    cloudlet.addRequiredFile(file.getAbsolutePath());
+                }
+            }
         }
     }
 
